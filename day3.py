@@ -14,7 +14,8 @@ def generate_sequence(N, initial_position=(0, 0), initial_value=1):
             position_value = initial_value
         else:
             arounds_steps = get_around_positions(*next_step)
-            position_value = sum(already_position.get(p, 0) for p in arounds_steps)
+            #position_value = sum(already_position.get(p, 0) for p in arounds_steps)
+            position_value = i + 1
 
         already_position[next_step] = position_value
         position = next_step
@@ -58,26 +59,26 @@ assert generate_next_step(2, 0, already_position=[(1, 0)]) == (2, 1)
 
 N = 10
 G = generate_sequence(N)
-assert next(G) == (1, (0, 0)) #1
-assert next(G) == (1, (1, 0)) #2
-assert next(G) == (2, (1, 1)) #3
-assert next(G)[1] == (0, 1) #4
-assert next(G)[1] == (-1, 1) #5
-assert next(G)[1] == (-1, 0)  #6
-assert next(G)[1] == (-1, -1) #7
+#assert next(G) == (1, (0, 0)) #1
+#assert next(G) == (1, (1, 0)) #2
+#assert next(G) == (2, (1, 1)) #3
+#assert next(G)[1] == (0, 1) #4
+#assert next(G)[1] == (-1, 1) #5
+#assert next(G)[1] == (-1, 0)  #6
+#assert next(G)[1] == (-1, -1) #7
 
 assert sorted(get_around_positions(0, 0)) == sorted([(1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1)])
 assert sorted(get_around_positions(-1, -1)) == sorted([(0, 0), (-1, 0), (-2, 0), (-2, -1), (-2, -2), (-1, -2), (0, -2), (0, -1)])
 
 N = 361527
-#for step, position in generate_sequence(N):
+for step, position in generate_sequence(N):
 #    if step % 1000 == 0: 
 #        print(step, position)
-#    if step == N: 
-#        print(abs(position[0]) + abs(position[1]))
+    if step == N: 
+        print(abs(position[0]) + abs(position[1]))
 
-for value, position in generate_sequence(N):
-    if value <= N: 
-        print(value)
-    else:
-        break
+#for value, position in generate_sequence(N):
+#    if value <= N: 
+#        print(value)
+#    else:
+#        break
