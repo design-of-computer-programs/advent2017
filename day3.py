@@ -77,6 +77,7 @@ N = 361527
 #        print(abs(position[0]) + abs(position[1]))
 
 for value, position in generate_sequence(N):
-    if value > N: 
+    if value <= N: 
         print(value)
+    else:
         break
