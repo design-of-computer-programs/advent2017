@@ -25,6 +25,13 @@ def first(iterator):
     return next(iter(iterator))
 
 
+cat = ''.join
+
+def cano(items, typ=None):
+    typ = typ or (cat if isinstance(items, str) else tuple)
+    return typ(sorted(items))
+
+
 assert mapt(int, ['1', '2', '3']) == (1, 2, 3)
 
 assert atom("1") == 1
@@ -44,3 +51,10 @@ assert array([
     "7 5 3",
     "2 4 6 8",
     ]) == ((5, 1, 9, 5), (7, 5, 3), (2, 4, 6, 8))
+
+assert cano('abc') == cano('acb')
+assert cano('acb') == 'abc'
+assert cano([1, 3, 2]) == (1, 2, 3)
+assert cano([1, 3, 2]) == cano([1, 2, 3])
+assert cano([1, 3, 2]) != cano([3, 2, 3])
+
