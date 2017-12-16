@@ -4,19 +4,13 @@ from utilities import vector
 
 offsets = [int(line) for line in open('data/day5.txt')]
 
-index = step = 0
-while True:
-    next_index = index + offsets[index]
-    if offsets[index] >= 3: offsets[index] -= 1
-    else: offsets[index] += 1
-    step += 1
+index = step = next_index = 0
 
-    if next_index >= len(offsets): 
-        break
+while next_index in range(len(offsets)):
+    next_index = index + offsets[index]
+    offsets[index] += (-1 if offsets[index] >= 3 else 1)
+    #offsets[index] += 1
+    step += 1
     index = next_index
-    
-    #if step % 1000 == 0: print(step)
 
 print(step)
-    
-
