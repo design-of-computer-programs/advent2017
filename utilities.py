@@ -32,6 +32,21 @@ def cano(items, typ=None):
     return typ(sorted(items))
 
 
+def arg_(items, func):
+    return func(enumerate(items), key=lambda x: x[1])[0]
+
+def argmax(items): return arg_(items, max)
+
+def argmin(items): return arg_(items, min)
+
+
+assert argmin([0, 1, 2, 3]) == 0
+assert argmin([2, 1, 2, 3]) == 1
+assert argmin([2, 1, 1, 3]) == 1
+assert argmax([2, 1, 1, 3]) == 3
+assert argmax([4, 1, 1, 3]) == 0
+assert argmax([2, 5, 5, 3]) == 1
+
 assert mapt(int, ['1', '2', '3']) == (1, 2, 3)
 
 assert atom("1") == 1
