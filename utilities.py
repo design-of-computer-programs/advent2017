@@ -40,6 +40,12 @@ def argmax(items): return arg_(items, max)
 def argmin(items): return arg_(items, min)
 
 
+def merge_dict(dict1, dict2):
+    return {**dict1, **dict2}
+
+
+assert merge_dict({1: 1, 2: 2}, {'1': 1, '2': 2}) == {1: 1, 2: 2, '1': 1, '2': 2}
+
 assert argmin([0, 1, 2, 3]) == 0
 assert argmin([2, 1, 2, 3]) == 1
 assert argmin([2, 1, 1, 3]) == 1
