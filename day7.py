@@ -63,21 +63,19 @@ def get_unblance_sub_tree(root, tree, weights_map):
                 have_seen += leaves
             else:
                 different_one, normal_one = find_different(weights)
+                print(weights)
                 return different_one - normal_one
 
     return 0
 
 
-assert find_root(*build_leaves_to_parent('data/day7_test.txt')) == 'tknk'
+puzzle_example = 'data/day7_test.txt'
+assert find_root(*build_leaves_to_parent(puzzle_example)) == 'tknk'
 
-arbitary_leave, leaves_to_parents = build_leaves_to_parent('data/day7.txt')
-root = find_root(arbitary_leave, leaves_to_parents)
-
-
-tmp_leave, tmp_leaves_to_parents = build_leaves_to_parent('data/day7_test.txt')
+tmp_leave, tmp_leaves_to_parents = build_leaves_to_parent(puzzle_example)
 tmp_tree = get_parents_to_leaves(tmp_leaves_to_parents)
-tmp_weights = get_weights('data/day7_test.txt')
-t_root = find_root(*build_leaves_to_parent('data/day7_test.txt')) 
+tmp_weights = get_weights(puzzle_example)
+t_root = find_root(*build_leaves_to_parent(puzzle_example)) 
 
 assert get_weights_all_tower('ugml', tmp_tree, tmp_weights) == 251
 assert get_weights_all_tower('padx', tmp_tree, tmp_weights) == 243
@@ -85,3 +83,15 @@ assert get_weights_all_tower('fwft', tmp_tree, tmp_weights) == 243
 assert get_weights_all_tower('tknk', tmp_tree, tmp_weights) == 243 + 243 + 251 + tmp_weights[t_root]
 
 assert get_unblance_sub_tree(t_root, tmp_tree, tmp_weights) == 8
+
+
+## main
+
+puzzle_input = 'data/day7.txt'
+arbitary_leave, leaves_to_parents = build_leaves_to_parent(puzzle_input)
+root = find_root(arbitary_leave, leaves_to_parents)
+print(root)
+
+tree = get_parents_to_leaves(leaves_to_parents)
+weights = get_weights(puzzle_input)
+print(get_unblance_sub_tree(root, tree, weights))
