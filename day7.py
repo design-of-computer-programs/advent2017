@@ -1,4 +1,7 @@
 from utilities import merge_dict
+from utilities import all_equal
+from utilities import find_different
+from collections import defaultdict
 
 def parse_link_as_leave_to_parent(link):
     parent = link.split()[0]
@@ -29,9 +32,56 @@ def find_root(leave, leaves_to_parents):
     return leave
 
 
+def get_parents_to_leaves(leaves_to_parents):
+    parents_to_leaves = defaultdict(list)
+    for leave, parent in leaves_to_parents.items(): 
+        parents_to_leaves[parent].append(leave)
+    return parents_to_leaves
+
+
+def get_weights(fname):
+    return {s.split()[0]: int(s[s.find('(')+1: s.find(')')]) for s in open(fname)}
+
+
+def get_weights_all_tower(root, tree, weights_map):
+    if root not in tree: return weights_map[root]
+    else: return weights_map[root] + sum([
+            get_weights_all_tower(c, tree, weights_map) for c in tree[root]
+        ])
+
+
+def get_unblance_sub_tree(root, tree, weights_map):
+    have_seen = [root]
+    
+    while len(have_seen) > 0:
+        r = have_seen.pop(0)
+        if r not in tree: break
+        else:
+            leaves = tree[r]
+            weights = [get_weights_all_tower(l, tree, weights_map) for l in leaves]            
+            if all_equal(weights):
+                have_seen += leaves
+            else:
+                different_one, normal_one = find_different(weights)
+                return different_one - normal_one
+
+    return 0
+
+
 assert find_root(*build_leaves_to_parent('data/day7_test.txt')) == 'tknk'
 
-print(find_root(*build_leaves_to_parent('data/day7.txt')))
+arbitary_leave, leaves_to_parents = build_leaves_to_parent('data/day7.txt')
+root = find_root(arbitary_leave, leaves_to_parents)
 
 
+tmp_leave, tmp_leaves_to_parents = build_leaves_to_parent('data/day7_test.txt')
+tmp_tree = get_parents_to_leaves(tmp_leaves_to_parents)
+tmp_weights = get_weights('data/day7_test.txt')
+t_root = find_root(*build_leaves_to_parent('data/day7_test.txt')) 
 
+assert get_weights_all_tower('ugml', tmp_tree, tmp_weights) == 251
+assert get_weights_all_tower('padx', tmp_tree, tmp_weights) == 243
+assert get_weights_all_tower('fwft', tmp_tree, tmp_weights) == 243
+assert get_weights_all_tower('tknk', tmp_tree, tmp_weights) == 243 + 243 + 251 + tmp_weights[t_root]
+
+assert get_unblance_sub_tree(t_root, tmp_tree, tmp_weights) == 8

@@ -1,3 +1,6 @@
+from collections import Counter
+
+
 def mapt(func, iterator):
     return tuple(map(func, iterator))
 
@@ -43,6 +46,26 @@ def argmin(items): return arg_(items, min)
 def merge_dict(dict1, dict2):
     return {**dict1, **dict2}
 
+
+def all_equal(items):
+    return len(set(items)) == 1
+
+
+def find_different(items):
+    # return a tuple which contains difference_one and normal_one
+    assert len(set(items)) == 2 and len(items) >= 3
+
+    for item, times in Counter(items).items():
+        if times == 1: return item, list(set(items) - {item})[0]
+    return None, None
+
+
+
+assert find_different([1, 2, 2]) == (1, 2)
+assert find_different([3, 3, 2]) == (2, 3)
+
+assert all_equal([1, 1, 1])
+assert not all_equal([2, 1, 1])
 
 assert merge_dict({1: 1, 2: 2}, {'1': 1, '2': 2}) == {1: 1, 2: 2, '1': 1, '2': 2}
 
