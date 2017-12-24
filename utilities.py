@@ -1,4 +1,12 @@
 from collections import Counter
+import operator as op
+
+operations = {
+        "==": op.eq, '!=': op.ne,
+        "<=": op.le, '<': op.lt, 
+        '>=': op.ge, '>': op.gt,
+        "+": op.add, '-': op.sub,
+    }
 
 
 def mapt(func, iterator):
