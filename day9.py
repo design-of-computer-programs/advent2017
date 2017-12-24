@@ -47,16 +47,17 @@ def delete_garbage(line):
     collected_chars = []
     
     skip = False
+    garbage_num = 0
 
     for c in line:
-        if c == '>' and skip: skip = False
+        if c == '>' and skip: skip = False; garbage_num += 1
         if c == '<' and not skip: skip = True
 
         if not skip and c != '>': 
             collected_chars.append(c)
 
 
-    return ''.join(collected_chars)
+    return ''.join(collected_chars), garbage_num
         
 
 groups = get_groups('{{{},{},{{}}}}')
@@ -73,8 +74,9 @@ print(delete_garbage(delete_ignored('{{<!>},{<!>},{<!>},{<a>}}')))
 
 inputs = next(open('data/day9.txt')).strip()  # the line last is \n, dont forget to delete it.
 line = delete_ignored(inputs)
-line = delete_garbage(line)
-groups = get_groups(line)
+no_garbage_line, garbage_num = delete_garbage(line)
+print('garbage characters length is {}:'.format(len(line)  - len(no_garbage_line) - 2 * garbage_num))
+groups = get_groups(no_garbage_line)
 
 print(sum(
     get_score_of_group(g_begin, groups) 
